@@ -22,7 +22,24 @@ class MyApp extends StatelessWidget {
           margin: EdgeInsets.all(8),
           child: Column(
             children: [
-              TextFormField(),
+              TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return null;
+                  } else {
+                    double? num = double.tryParse(value);
+                    if (num == null)
+                      return 'Invalid value';
+                    else if (num < 1 || num > 10)
+                      return 'Please enter value between 1 and 10.000';
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  hintText: 'Masukkan Suhu Dalam Celcius',
+                ),
+              ),
             ],
           ),
         ),
