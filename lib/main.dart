@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController etInput = TextEditingController();
+  List<String> listSatuanSuhu = ["Kelvin", "Reamur", "Fahrenheit"];
+  String selectedDropDown = "Kelvin";
+
+  void onDropdownChange(String? value) {
+    return setState(() {
+      selectedDropDown = value.toString();
+    });
+  }
+
   // This widget is the roor of your application.
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,22 +39,59 @@ class MyApp extends StatelessWidget {
           child: Column(
             children: [
               TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return null;
-                  } else {
-                    double? num = double.tryParse(value);
-                    if (num == null)
-                      return 'Invalid value';
-                    else if (num < 1 || num > 10)
-                      return 'Please enter value between 1 and 10.000';
-                  }
-                  return null;
-                },
                 keyboardType: TextInputType.number,
+                controller: etInput,
                 decoration: InputDecoration(
-                  hintText: 'Masukkan Suhu Dalam Celcius',
+                  labelText: 'Celcius',
+                  hintText: 'Enter the temperature in celcius',
                 ),
+              ),
+              SizedBox(
+                height: 6,
+              ),
+              DropdownButton(
+                isExpanded: true,
+                value: selectedDropDown,
+                items: listSatuanSuhu.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  onDropdownChange(value);
+                },
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Text(
+                "Hasil",
+                style: TextStyle(fontSize: 22),
+              ),
+              Text(
+                "365",
+                style: TextStyle(fontSize: 34),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text("Konversi Suhu"),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Riwayat Konversi",
+                style: TextStyle(fontSize: 20),
               ),
             ],
           ),
