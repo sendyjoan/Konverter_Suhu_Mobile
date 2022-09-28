@@ -15,10 +15,29 @@ class _MyAppState extends State<MyApp> {
   TextEditingController etInput = TextEditingController();
   List<String> listSatuanSuhu = ["Kelvin", "Reamur", "Fahrenheit"];
   String selectedDropDown = "Kelvin";
+  double hasilPerhitungan = 0;
 
   void onDropdownChange(String? value) {
     return setState(() {
       selectedDropDown = value.toString();
+    });
+  }
+
+  void SuhuConvertion() {
+    return setState(() {
+      if (etInput.text.isNotEmpty) {
+        switch (selectedDropDown) {
+          case "Kelvin":
+            hasilPerhitungan = int.parse(etInput.text) + 273.15;
+            break;
+          case "Reamur":
+            hasilPerhitungan = int.parse(etInput.text) * 4 / 5;
+            break;
+          case "Fahrenheit":
+            hasilPerhitungan = (int.parse(etInput.text) * 9 / 5) + 32;
+            break;
+        }
+      }
     });
   }
 
@@ -62,25 +81,27 @@ class _MyAppState extends State<MyApp> {
                   onDropdownChange(value);
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
-              Text(
+              const Text(
                 "Hasil",
                 style: TextStyle(fontSize: 22),
               ),
               Text(
-                "365",
+                "$hasilPerhitungan",
                 style: TextStyle(fontSize: 34),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        SuhuConvertion();
+                      },
                       child: Text("Konversi Suhu"),
                     ),
                   ),
